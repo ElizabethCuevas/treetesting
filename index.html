@@ -3,212 +3,363 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tree Test — Manada</title>
+<title>TreeTest App</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #ffffff; --bg2: #f5f5f3; --bg3: #eeece8;
-  --text: #1a1a18; --text2: #6b6b68; --text3: #a8a8a4;
-  --border: rgba(0,0,0,0.09); --border2: rgba(0,0,0,0.16);
-  --blue: #185FA5; --blue-dark: #0C447C; --blue-light: #E6F1FB; --blue-mid: #378ADD;
-  --green: #639922; --green-bg: #EAF3DE; --green-text: #27500A; --green-border: #C0DD97;
-  --red: #D85A30; --red-bg: #FAECE7; --red-text: #712B13; --red-border: #F0997B;
-  --purple: #7F77DD; --amber: #EF9F27; --gray-dot: #B4B2A9;
-  --radius: 8px; --radius-lg: 12px;
+  --bg:#ffffff; --bg2:#f5f5f3; --bg3:#eceae6;
+  --text:#1a1a18; --text2:#6b6b68; --text3:#a8a8a4;
+  --border:rgba(0,0,0,0.09); --border2:rgba(0,0,0,0.16);
+  --blue:#185FA5; --blue-dk:#0C447C; --blue-lt:#E6F1FB; --blue-md:#378ADD;
+  --green:#3B6D11; --green-bg:#EAF3DE; --green-lt:#C0DD97;
+  --red:#712B13; --red-bg:#FAECE7; --red-bd:#F0997B;
+  --amber:#BA7517; --amber-bg:#FAEEDA;
+  --purple:#534AB7; --gray-dot:#B4B2A9;
+  --r:8px; --rl:12px;
 }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; color: var(--text); background: var(--bg2); min-height: 100vh; }
 
 /* ── TOPBAR ── */
-.topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 52px; background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
-.logo { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--text); }
-.logo-sq { width: 22px; height: 22px; border-radius: 6px; background: var(--blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.logo-sq svg { width: 12px; height: 12px; fill: white; }
-.topbar-right { display: flex; align-items: center; gap: 8px; }
+.topbar { display:flex; align-items:center; justify-content:space-between; padding:0 24px; height:52px; background:var(--bg); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:30; gap:12px; }
+.logo { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; cursor:pointer; color:var(--text); text-decoration:none; flex-shrink:0; }
+.logo-sq { width:22px; height:22px; border-radius:6px; background:var(--blue); display:flex; align-items:center; justify-content:center; }
+.logo-sq svg { width:12px; height:12px; fill:white; }
+.topbar-center { flex:1; display:flex; align-items:center; justify-content:center; }
+.study-title-bar { font-size:13px; font-weight:600; color:var(--text2); }
+.topbar-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
 
 /* ── BUTTONS ── */
-.btn { padding: 7px 16px; border-radius: var(--radius); border: 1px solid var(--border2); background: var(--bg); font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text); transition: background 0.15s; white-space: nowrap; }
-.btn:hover { background: var(--bg2); }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-primary { background: var(--blue); color: white; border-color: var(--blue); font-size: 13px; padding: 9px 22px; }
-.btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); }
-.btn-sm-blue { background: var(--blue-light); color: var(--blue-dark); border-color: var(--blue-mid); font-size: 12px; }
-.btn-sm-blue:hover { background: #d0e6f7; }
-.btn-danger { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
-.btn-danger:hover { background: #f5d3c8; }
+.btn { padding:7px 14px; border-radius:var(--r); border:1px solid var(--border2); background:var(--bg); font-size:12px; font-weight:500; cursor:pointer; color:var(--text); transition:background .15s; white-space:nowrap; }
+.btn:hover { background:var(--bg2); }
+.btn:disabled { opacity:.4; cursor:not-allowed; }
+.btn-primary { background:var(--blue); color:white; border-color:var(--blue); font-size:13px; padding:9px 20px; }
+.btn-primary:hover { background:var(--blue-dk); }
+.btn-blue { background:var(--blue-lt); color:var(--blue-dk); border-color:var(--blue-md); }
+.btn-blue:hover { background:#d5e9f7; }
+.btn-green { background:var(--green-bg); color:var(--green); border-color:var(--green-lt); }
+.btn-green:hover { background:#d4ecb8; }
+.btn-danger { background:var(--red-bg); color:var(--red); border-color:var(--red-bd); }
+.btn-danger:hover { background:#f5d0c4; }
+.btn-ghost { background:transparent; border-color:transparent; color:var(--text2); }
+.btn-ghost:hover { background:var(--bg2); border-color:var(--border); }
+.btn-icon { width:30px; height:30px; padding:0; display:flex; align-items:center; justify-content:center; font-size:15px; }
 
-/* ── SCREENS ── */
-.screen { display: none; }
-.screen.active { display: block; }
+/* ── LAYOUT ── */
+.page { display:none; min-height:calc(100vh - 52px); }
+.page.active { display:block; }
+.centered { display:flex; justify-content:center; align-items:flex-start; padding:32px 20px 64px; }
+.card { background:var(--bg); border:1px solid var(--border); border-radius:var(--rl); padding:28px; width:100%; }
+.card-sm { max-width:400px; }
+.card-md { max-width:640px; }
+.card-lg { max-width:900px; }
 
-/* ── BODY AREA ── */
-.body-area { padding: 32px 20px 64px; display: flex; justify-content: center; }
-.card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; width: 100%; max-width: 680px; }
-h2 { font-size: 17px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
-.desc { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 20px; }
-.info-box { background: var(--bg2); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 22px; }
-.info-box p { font-size: 13px; color: var(--text2); line-height: 1.8; display: flex; align-items: flex-start; gap: 8px; }
-.info-box p::before { content: '·'; color: var(--blue); font-weight: 700; flex-shrink: 0; }
+/* ── TYPOGRAPHY ── */
+h1 { font-size:22px; font-weight:800; margin-bottom:6px; }
+h2 { font-size:17px; font-weight:700; margin-bottom:6px; line-height:1.4; }
+h3 { font-size:14px; font-weight:700; margin-bottom:4px; }
+.muted { font-size:13px; color:var(--text2); line-height:1.65; }
+.section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--text3); margin-bottom:10px; }
 
-/* ── PROGRESS / TIMER ── */
-.progress-area { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text2); }
-.prog-track { width: 110px; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
-.prog-bar { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s; }
-.timer-pill { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--bg2); border: 1px solid var(--border); color: var(--text2); min-width: 34px; text-align: center; }
+/* ── FORMS ── */
+label { font-size:12px; font-weight:600; color:var(--text2); display:block; margin-bottom:5px; }
+input[type=text], input[type=password], textarea, select {
+  width:100%; border:1px solid var(--border2); border-radius:var(--r);
+  padding:8px 11px; font-size:13px; font-family:inherit; color:var(--text);
+  background:var(--bg); outline:none; transition:border-color .15s;
+}
+input:focus, textarea:focus, select:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(24,95,165,.1); }
+textarea { resize:vertical; line-height:1.6; }
+.field { margin-bottom:16px; }
+.field:last-child { margin-bottom:0; }
+.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.btn-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; }
 
-/* ── TASK ── */
-.task-q { font-size: 15px; font-weight: 700; line-height: 1.5; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-.breadcrumb { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text2); margin-bottom: 12px; flex-wrap: wrap; }
-.breadcrumb .node { color: var(--blue); font-weight: 600; }
-.breadcrumb .sep { color: var(--text3); }
+/* ── BADGES ── */
+.badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; padding:3px 8px; border-radius:20px; }
+.badge-live { background:var(--green-bg); color:var(--green); border:1px solid var(--green-lt); }
+.badge-draft { background:var(--bg3); color:var(--text2); border:1px solid var(--border2); }
+.badge-blue { background:var(--blue-lt); color:var(--blue-dk); border:1px solid var(--blue-md); }
 
-/* ── TREE ── */
-.tree-box { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; }
-.tree-hint { padding: 9px 14px; background: var(--bg2); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text2); }
-.tree-ul { list-style: none; padding: 8px; }
-.tree-li { padding: 6px 10px; border-radius: var(--radius); cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: background 0.1s; user-select: none; }
-.tree-li:hover { background: var(--bg2); }
-.tree-li.selected { background: var(--blue-light); color: var(--blue-dark); font-weight: 600; }
-.tree-li .tog { font-size: 9px; color: var(--text3); width: 12px; text-align: center; flex-shrink: 0; }
-.children-ul { list-style: none; padding-left: 22px; display: none; }
-.children-ul.open { display: block; }
-.sel-box { background: var(--bg2); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
-.sel-box .lbl { color: var(--text2); }
-.sel-box .val { font-weight: 700; color: var(--blue); }
-.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+/* ══════════════════════════════
+   HOME / STUDY SELECTOR
+══════════════════════════════ */
+.studies-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+.study-card { background:var(--bg); border:1px solid var(--border); border-radius:var(--rl); padding:20px; cursor:pointer; transition:border-color .15s, box-shadow .15s; display:flex; flex-direction:column; gap:10px; }
+.study-card:hover { border-color:var(--blue-md); box-shadow:0 0 0 3px rgba(24,95,165,.07); }
+.study-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.study-card-title { font-size:14px; font-weight:700; line-height:1.4; }
+.study-card-desc { font-size:12px; color:var(--text2); line-height:1.5; }
+.study-card-meta { display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--text3); }
+.dot-live { width:7px; height:7px; border-radius:50%; background:#4cae4f; flex-shrink:0; }
+.dot-draft { width:7px; height:7px; border-radius:50%; background:var(--gray-dot); flex-shrink:0; }
+
+/* ══════════════════════════════
+   ADMIN SIDEBAR LAYOUT
+══════════════════════════════ */
+.admin-layout { display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 52px); }
+.admin-sidebar { background:var(--bg); border-right:1px solid var(--border); padding:16px 10px; overflow-y:auto; }
+.admin-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--text3); padding:4px 10px 10px; }
+.sidebar-study-item { padding:9px 12px; border-radius:var(--r); cursor:pointer; display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text2); transition:background .1s; margin-bottom:2px; }
+.sidebar-study-item:hover { background:var(--bg2); color:var(--text); }
+.sidebar-study-item.active { background:var(--blue-lt); color:var(--blue-dk); font-weight:600; }
+.sidebar-study-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sidebar-footer { padding:10px; border-top:1px solid var(--border); margin-top:8px; }
+.admin-content { overflow-y:auto; }
+
+/* ── ADMIN TABS ── */
+.admin-tabs { display:flex; border-bottom:1px solid var(--border); background:var(--bg); padding:0 24px; position:sticky; top:52px; z-index:20; }
+.atab { padding:11px 16px; font-size:13px; cursor:pointer; color:var(--text2); border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap; transition:color .15s; }
+.atab:hover { color:var(--text); }
+.atab.active { color:var(--blue); border-bottom-color:var(--blue); font-weight:700; }
+.admin-tab-body { padding:24px; }
+
+/* ── TREE EDITOR ── */
+.tree-editor { border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }
+.tree-toolbar { display:flex; gap:8px; padding:10px 12px; background:var(--bg2); border-bottom:1px solid var(--border); flex-wrap:wrap; }
+.tree-body { padding:8px; min-height:100px; }
+.te-node { display:flex; align-items:center; gap:6px; padding:5px 8px; border-radius:var(--r); margin:1px 0; }
+.te-node:hover { background:var(--bg2); }
+.te-node.selected { background:var(--blue-lt); }
+.te-indent { flex-shrink:0; }
+.te-toggle { font-size:9px; color:var(--text3); width:12px; text-align:center; flex-shrink:0; cursor:pointer; }
+.te-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.te-label { flex:1; }
+.te-label input { border:none; background:transparent; font-size:13px; font-family:inherit; color:var(--text); width:100%; outline:none; padding:0; }
+.te-label input:focus { background:var(--bg-lt, #f8f8f6); border-radius:4px; padding:0 4px; }
+.te-lvl { font-size:10px; padding:1px 5px; border-radius:6px; background:var(--bg3); color:var(--text3); flex-shrink:0; }
+.te-actions { display:none; gap:3px; }
+.te-node:hover .te-actions { display:flex; }
+.te-btn { width:22px; height:22px; border:none; background:none; cursor:pointer; color:var(--text3); font-size:13px; display:flex; align-items:center; justify-content:center; border-radius:4px; }
+.te-btn:hover { background:var(--bg); color:var(--text); }
+.te-btn.del:hover { color:var(--red); }
+
+/* ── TASK EDITOR ── */
+.task-editor-item { border:1px solid var(--border); border-radius:var(--r); overflow:hidden; margin-bottom:10px; }
+.task-editor-head { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--bg2); border-bottom:1px solid var(--border); }
+.task-num { width:22px; height:22px; border-radius:50%; background:var(--blue); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.task-editor-body { padding:14px; display:flex; flex-direction:column; gap:10px; }
+
+/* ══════════════════════════════
+   PARTICIPANT FLOW
+══════════════════════════════ */
+.progress-area { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--text2); }
+.prog-track { width:110px; height:4px; background:var(--bg3); border-radius:2px; overflow:hidden; }
+.prog-bar { height:100%; background:var(--blue); border-radius:2px; transition:width .4s; }
+.timer-pill { font-size:11px; padding:2px 8px; border-radius:10px; background:var(--bg2); border:1px solid var(--border); color:var(--text2); min-width:34px; text-align:center; }
+.task-q { font-size:15px; font-weight:700; line-height:1.5; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+.bc { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text2); margin-bottom:12px; flex-wrap:wrap; }
+.bc .bcnode { color:var(--blue); font-weight:700; }
+.bc .bcsep { color:var(--text3); }
+.tree-box { border:1px solid var(--border); border-radius:var(--r); overflow:hidden; margin-bottom:14px; }
+.tree-hint { padding:9px 14px; background:var(--bg2); border-bottom:1px solid var(--border); font-size:12px; color:var(--text2); }
+.tree-ul { list-style:none; padding:8px; }
+.tree-li { padding:6px 10px; border-radius:var(--r); cursor:pointer; font-size:13px; display:flex; align-items:center; gap:8px; transition:background .1s; user-select:none; }
+.tree-li:hover { background:var(--bg2); }
+.tree-li.selected { background:var(--blue-lt); color:var(--blue-dk); font-weight:600; }
+.tree-li .tog { font-size:9px; color:var(--text3); width:12px; text-align:center; flex-shrink:0; }
+.children-ul { list-style:none; padding-left:22px; display:none; }
+.children-ul.open { display:block; }
+.sel-box { background:var(--bg2); border-radius:var(--r); padding:10px 14px; font-size:13px; display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:4px; }
+.sel-lbl { color:var(--text2); }
+.sel-val { font-weight:700; color:var(--blue); }
+
+/* ══════════════════════════════
+   RESULTS DASHBOARD
+══════════════════════════════ */
+.metrics-row { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:22px; }
+.metric { background:var(--bg3); border-radius:var(--r); padding:14px; }
+.metric-lbl { font-size:11px; color:var(--text2); font-weight:600; margin-bottom:5px; }
+.metric-val { font-size:24px; font-weight:800; line-height:1; }
+.result-card { background:var(--bg); border:1px solid var(--border); border-radius:var(--rl); margin-bottom:16px; overflow:hidden; }
+.result-head { padding:14px 20px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; gap:12px; }
+.result-body { padding:20px; display:grid; grid-template-columns:260px 1fr; gap:28px; }
+.pie-wrap { position:relative; width:156px; height:156px; margin:0 auto 14px; }
+.pie-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+.pie-pct { font-size:20px; font-weight:800; }
+.pie-sub { font-size:10px; color:var(--text2); margin-top:2px; }
+.legend-tbl { width:100%; font-size:12px; border-collapse:collapse; }
+.legend-tbl td { padding:5px 3px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.legend-tbl tr:last-child td { border-bottom:none; }
+.ldot { width:10px; height:10px; border-radius:2px; }
+.bars-col { display:flex; flex-direction:column; gap:16px; }
+.bar-grp {}
+.bar-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:5px; }
+.bar-lbl { font-size:12px; color:var(--text2); font-weight:600; }
+.bar-val { font-size:14px; font-weight:800; }
+.bar-track { height:22px; background:var(--bg3); border-radius:3px; position:relative; overflow:hidden; }
+.bar-fill { height:100%; border-radius:3px; }
+.ci-tick { position:absolute; top:4px; bottom:4px; width:1.5px; background:rgba(0,0,0,.25); border-radius:1px; }
+.ci-span { position:absolute; top:6px; bottom:6px; background:rgba(0,0,0,.09); border-radius:1px; }
+.axis { display:flex; justify-content:space-between; margin-top:3px; }
+.axis span { font-size:10px; color:var(--text3); }
+.time-inner { position:absolute; height:14px; top:50%; transform:translateY(-50%); background:#B5D4F4; border-radius:2px; }
+.note { font-size:10px; color:var(--text3); margin-top:8px; }
 
 /* ── FINISH ── */
-.finish-circle { width: 56px; height: 56px; border-radius: 50%; background: var(--green-bg); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; font-size: 28px; }
-.res-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
-.res-cell { border-radius: var(--radius); padding: 14px; text-align: center; }
-.res-cell .rl { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
-.res-cell .rv { font-size: 28px; font-weight: 800; }
+.finish-circle { width:52px; height:52px; border-radius:50%; background:var(--green-bg); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:26px; }
+.res-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:18px; }
+.res-cell { border-radius:var(--r); padding:14px; text-align:center; }
+.rc-lbl { font-size:11px; font-weight:700; margin-bottom:4px; }
+.rc-val { font-size:26px; font-weight:800; }
 
-/* ── PASSWORD GATE ── */
-.gate-wrap { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 52px); }
-.gate-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; width: 100%; max-width: 360px; text-align: center; }
-.gate-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-.gate-card p { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
-.gate-card input { width: 100%; border: 1px solid var(--border2); border-radius: var(--radius); padding: 9px 12px; font-size: 14px; text-align: center; letter-spacing: 2px; outline: none; margin-bottom: 12px; }
-.gate-card input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(24,95,165,0.12); }
-.gate-err { font-size: 12px; color: var(--red-text); margin-top: 6px; min-height: 18px; }
+/* ── GATE ── */
+.gate-wrap { display:flex; align-items:center; justify-content:center; min-height:calc(100vh - 52px); padding:20px; }
+.gate-icon { width:44px; height:44px; border-radius:12px; background:var(--blue-lt); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+.gate-err { font-size:12px; color:var(--red); margin-top:6px; min-height:18px; text-align:center; }
 
-/* ── DASHBOARD ── */
-.dash-main { max-width: 900px; margin: 0 auto; padding: 28px 20px 64px; }
-.dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; flex-wrap: wrap; gap: 10px; }
-.dash-title { font-size: 15px; font-weight: 700; }
-.dash-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
-.dash-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.metrics-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 22px; }
-.metric { background: var(--bg3); border-radius: var(--radius); padding: 14px 16px; }
-.metric-lbl { font-size: 11px; color: var(--text2); font-weight: 500; margin-bottom: 6px; }
-.metric-val { font-size: 26px; font-weight: 800; line-height: 1; }
-.chip-bar { font-size: 11px; padding: 3px 9px; border-radius: 20px; background: var(--bg2); border: 1px solid var(--border2); color: var(--text2); }
+/* ── EMPTY ── */
+.empty-state { text-align:center; padding:56px 24px; border:1.5px dashed var(--border2); border-radius:var(--rl); }
+.empty-state h3 { font-size:15px; font-weight:700; margin-bottom:8px; }
 
-/* ── TASK RESULT CARD ── */
-.task-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 16px; overflow: hidden; }
-.task-head { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 12px; }
-.task-badge { width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-.task-q-text { font-size: 14px; font-weight: 600; line-height: 1.5; margin-bottom: 5px; }
-.task-body { padding: 20px; display: grid; grid-template-columns: 260px 1fr; gap: 28px; }
-@media(max-width:620px){ .task-body { grid-template-columns: 1fr; } .metrics-row { grid-template-columns: repeat(2,1fr); } }
+/* ── NOTIFICATIONS ── */
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--text); color:white; font-size:13px; font-weight:500; padding:10px 20px; border-radius:var(--r); z-index:999; opacity:0; transition:opacity .2s; pointer-events:none; }
+.toast.show { opacity:1; }
 
-/* ── PIE ── */
-.pie-wrap { position: relative; width: 156px; height: 156px; margin: 0 auto 14px; }
-.pie-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; pointer-events: none; }
-.pie-pct { font-size: 20px; font-weight: 800; line-height: 1; }
-.pie-sub { font-size: 10px; color: var(--text2); margin-top: 2px; }
-.legend-tbl { width: 100%; font-size: 12px; border-collapse: collapse; }
-.legend-tbl td { padding: 5px 3px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-.legend-tbl tr:last-child td { border-bottom: none; }
-.ldot { width: 10px; height: 10px; border-radius: 2px; }
-.dim { color: var(--text2); font-size: 11px; }
-.note { font-size: 10px; color: var(--text3); margin-top: 8px; }
-
-/* ── BARS ── */
-.bars-col { display: flex; flex-direction: column; gap: 16px; }
-.bar-grp {}
-.bar-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
-.bar-lbl { font-size: 12px; color: var(--text2); font-weight: 500; }
-.bar-val { font-size: 14px; font-weight: 700; }
-.bar-track { height: 22px; background: var(--bg3); border-radius: 3px; position: relative; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 3px; }
-.ci-tick { position: absolute; top: 4px; bottom: 4px; width: 1.5px; background: rgba(0,0,0,0.3); border-radius: 1px; }
-.ci-span { position: absolute; top: 6px; bottom: 6px; background: rgba(0,0,0,0.1); border-radius: 1px; }
-.axis { display: flex; justify-content: space-between; margin-top: 3px; }
-.axis span { font-size: 10px; color: var(--text3); }
-.time-inner { position: absolute; height: 14px; top: 50%; transform: translateY(-50%); background: #B5D4F4; border-radius: 2px; }
-
-/* ── EMPTY / NO DATA ── */
-.no-data { padding: 48px; text-align: center; color: var(--text3); font-size: 13px; }
-.empty-box { border: 1.5px dashed var(--border2); border-radius: var(--radius-lg); padding: 52px 24px; text-align: center; margin-bottom: 16px; }
-.empty-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-.empty-box p { font-size: 13px; color: var(--text2); line-height: 1.7; }
-.hint-box { font-size: 12px; background: var(--bg3); border-radius: var(--radius); padding: 10px 14px; display: inline-block; color: var(--text2); margin-top: 14px; text-align: left; }
-
-/* ── MODE TOGGLE ── */
-.mode-badge { font-size: 11px; padding: 3px 9px; border-radius: 20px; font-weight: 500; }
-.mode-p { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
-.mode-r { background: var(--blue-light); color: var(--blue-dark); border: 1px solid var(--blue-mid); }
+@media(max-width:640px) {
+  .admin-layout { grid-template-columns:1fr; }
+  .admin-sidebar { display:none; }
+  .result-body { grid-template-columns:1fr; }
+  .metrics-row { grid-template-columns:repeat(2,1fr); }
+  .row2 { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     TOPBAR (shared)
-══════════════════════════════════════════ -->
-<div class="topbar">
-  <div class="logo">
+<!-- TOPBAR -->
+<div class="topbar" id="topbar">
+  <div class="logo" onclick="navigate('home')">
     <div class="logo-sq"><svg viewBox="0 0 12 12"><path d="M1 1h4v4H1zM7 1h4v4H7zM1 7h4v4H1zM7 7h4v4H7z"/></svg></div>
-    TreeTest · Manada
+    TreeTest
   </div>
-  <div class="topbar-right">
-    <span class="mode-badge mode-p" id="modeBadge">participante</span>
-    <button class="btn" id="btnSwitchMode">ver resultados</button>
-  </div>
+  <div class="topbar-center"><span class="study-title-bar" id="topStudyTitle"></span></div>
+  <div class="topbar-right" id="topbarRight"></div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 1: Bienvenida participante
-══════════════════════════════════════════ -->
-<div id="s-welcome" class="screen active">
-  <div class="body-area">
-    <div class="card">
-      <h2>Estudio de arquitectura de información — Manada</h2>
-      <p class="desc">Gracias por participar. Te mostraremos la estructura de navegación de la app Manada y te pediremos que encuentres ciertos elementos.<br><br>No hay respuestas correctas o incorrectas — nos interesa entender cómo navegas de manera natural. El estudio tarda aproximadamente 5 minutos.</p>
-      <div class="info-box">
-        <p>Tendrás <strong>4 tareas</strong> de navegación</p>
-        <p>Puedes omitir cualquier tarea</p>
-        <p>Tus respuestas son completamente anónimas</p>
+<!-- PAGE: HOME -->
+<div id="page-home" class="page">
+  <div style="padding:32px 24px 64px;max-width:960px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+      <div>
+        <h1>Estudios de tree testing</h1>
+        <p class="muted">Selecciona un estudio activo para participar</p>
       </div>
-      <button class="btn btn-primary" onclick="startTask(0)">comenzar estudio</button>
+      <button class="btn btn-ghost" onclick="navigate('gate-admin')">acceso investigador →</button>
+    </div>
+    <div class="studies-grid" id="homeStudiesGrid"></div>
+    <div id="homeEmpty" style="display:none" class="empty-state">
+      <h3>No hay estudios activos</h3>
+      <p class="muted">El investigador aún no ha lanzado ningún estudio.<br>Vuelve más tarde o contacta al administrador.</p>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 2: Tarea
-══════════════════════════════════════════ -->
-<div id="s-task" class="screen">
-  <div class="topbar" style="position:static;border-bottom:none;padding:12px 24px;background:transparent">
-    <div style="flex:1"></div>
+<!-- PAGE: GATE ADMIN -->
+<div id="page-gate-admin" class="page">
+  <div class="gate-wrap">
+    <div class="card card-sm">
+      <div class="gate-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="4" y="9" width="12" height="9" rx="2" fill="#185FA5"/>
+          <path d="M7 9V6a3 3 0 116 0v3" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2 style="text-align:center">Panel de investigador</h2>
+      <p class="muted" style="text-align:center;margin-bottom:20px">Ingresa la contraseña para administrar los estudios</p>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="adminPwdInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkAdminPwd()">
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="checkAdminPwd()">entrar</button>
+      <div class="gate-err" id="adminGateErr"></div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="navigate('home')">← volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: ADMIN -->
+<div id="page-admin" class="page">
+  <div class="admin-layout">
+    <div class="admin-sidebar">
+      <div class="admin-sidebar-title">Estudios</div>
+      <div id="adminSidebarList"></div>
+      <div class="sidebar-footer">
+        <button class="btn btn-blue" style="width:100%" onclick="createStudy()">+ nuevo estudio</button>
+      </div>
+    </div>
+    <div class="admin-content">
+      <div id="adminNoStudy" style="padding:48px;text-align:center;color:var(--text3)">
+        <p style="font-size:13px">Selecciona un estudio o crea uno nuevo</p>
+      </div>
+      <div id="adminStudyEditor" style="display:none">
+        <div class="admin-tabs" id="adminTabs">
+          <div class="atab active" data-tab="setup">Configuración</div>
+          <div class="atab" data-tab="tree">Árbol</div>
+          <div class="atab" data-tab="tasks">Tareas</div>
+          <div class="atab" data-tab="share">Compartir</div>
+          <div class="atab" data-tab="results">Resultados</div>
+        </div>
+        <div class="admin-tab-body" id="adminTabBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: GATE RESULTS -->
+<div id="page-gate-results" class="page">
+  <div class="gate-wrap">
+    <div class="card card-sm">
+      <div class="gate-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="4" y="9" width="12" height="9" rx="2" fill="#185FA5"/>
+          <path d="M7 9V6a3 3 0 116 0v3" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2 style="text-align:center">Ver resultados</h2>
+      <p class="muted" style="text-align:center;margin-bottom:20px">Ingresa la contraseña del estudio para ver los resultados</p>
+      <div class="field">
+        <input type="password" id="resultsPwdInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkResultsPwd()">
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="checkResultsPwd()">ver resultados</button>
+      <div class="gate-err" id="resultsGateErr"></div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="navigate('home')">← volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: PARTICIPANT WELCOME -->
+<div id="page-welcome" class="page">
+  <div class="centered">
+    <div class="card card-md">
+      <div id="welcomeContent"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="startParticipant()">comenzar estudio</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: TASK -->
+<div id="page-task" class="page">
+  <div style="display:flex;justify-content:flex-end;padding:10px 24px;background:transparent">
     <div class="progress-area">
-      <span id="taskCounter">Tarea 1 de 4</span>
-      <div class="prog-track"><div class="prog-bar" id="progBar" style="width:25%"></div></div>
+      <span id="taskCounter" style="font-size:12px;color:var(--text2)">Tarea 1 de 1</span>
+      <div class="prog-track"><div class="prog-bar" id="progBar" style="width:50%"></div></div>
       <span class="timer-pill" id="timerChip">0s</span>
     </div>
   </div>
-  <div class="body-area" style="padding-top:8px">
-    <div class="card">
+  <div class="centered" style="padding-top:4px">
+    <div class="card card-md">
       <div class="task-q" id="taskQ"></div>
-      <div class="breadcrumb" id="breadcrumb"><span style="color:var(--text2)">Login / Registro</span></div>
+      <div class="bc" id="breadcrumb"></div>
       <div class="tree-box">
         <div class="tree-hint">Navega la estructura y selecciona dónde encontrarías lo que buscas</div>
         <ul class="tree-ul" id="treeRoot"></ul>
       </div>
       <div class="sel-box">
-        <span class="lbl">Seleccionado:</span>
-        <span class="val" id="selLabel">— ninguno —</span>
+        <span class="sel-lbl">Seleccionado:</span>
+        <span class="sel-val" id="selLabel">— ninguno —</span>
       </div>
       <div class="btn-row">
         <button class="btn btn-primary" id="btnConfirm" disabled onclick="submitTask(false)">confirmar selección</button>
@@ -218,365 +369,770 @@ h2 { font-size: 17px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 3: Gracias
-══════════════════════════════════════════ -->
-<div id="s-thanks" class="screen">
-  <div class="body-area">
-    <div class="card" style="text-align:center">
+<!-- PAGE: THANKS -->
+<div id="page-thanks" class="page">
+  <div class="centered">
+    <div class="card card-md" style="text-align:center">
       <div class="finish-circle">✓</div>
-      <h2 style="text-align:center">¡Muchas gracias por participar!</h2>
-      <p class="desc" style="text-align:center">Tus respuestas han sido registradas y nos ayudarán a mejorar la experiencia de la app Manada.</p>
+      <h2>¡Muchas gracias!</h2>
+      <p class="muted" id="farewellMsg" style="margin-top:8px"></p>
       <div class="res-grid" id="resSummary"></div>
-      <button class="btn" style="margin-top:24px" onclick="resetParticipant()">realizar de nuevo</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCREEN 4: Password gate
-══════════════════════════════════════════ -->
-<div id="s-gate" class="screen">
-  <div class="gate-wrap">
-    <div class="gate-card">
-      <div style="width:44px;height:44px;border-radius:12px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <rect x="4" y="9" width="12" height="9" rx="2" fill="#185FA5"/>
-          <path d="M7 9V6a3 3 0 116 0v3" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
+      <div class="btn-row" style="justify-content:center;margin-top:24px">
+        <button class="btn" onclick="navigate('home')">volver al inicio</button>
       </div>
-      <h3>Acceso investigador</h3>
-      <p>Ingresa la contraseña para ver los resultados del estudio</p>
-      <input type="password" id="pwdInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPwd()">
-      <button class="btn btn-primary" style="width:100%" onclick="checkPwd()">entrar</button>
-      <div class="gate-err" id="gateErr"></div>
-      <button class="btn" style="width:100%;margin-top:8px;font-size:12px;color:var(--text2)" onclick="showScreen('s-welcome')">← volver al estudio</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 5: Dashboard resultados
-══════════════════════════════════════════ -->
-<div id="s-results" class="screen">
-  <div class="dash-main">
-    <div class="dash-header">
+<!-- PAGE: RESULTS -->
+<div id="page-results" class="page">
+  <div style="max-width:900px;margin:0 auto;padding:28px 20px 64px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px">
       <div>
-        <div class="dash-title">Resultados — Manada Tree Test</div>
-        <div class="dash-sub" id="lastUpdate">—</div>
+        <h2 id="resultsStudyName">Resultados</h2>
+        <p class="muted" id="resultsLastUpdate">—</p>
       </div>
-      <div class="dash-actions">
-        <span class="chip-bar" id="partCount">0 participantes</span>
-        <button class="btn btn-sm-blue" onclick="renderDashboard()">↻ actualizar</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-blue" onclick="renderResultsPage()">↻ actualizar</button>
         <button class="btn" onclick="exportCSV()">exportar CSV</button>
-        <button class="btn btn-danger" onclick="clearData()">limpiar datos</button>
+        <button class="btn btn-danger" onclick="clearStudyData()">limpiar datos</button>
       </div>
     </div>
-
-    <!-- Global metrics -->
     <div class="metrics-row">
       <div class="metric"><div class="metric-lbl">participantes</div><div class="metric-val" id="mPart">—</div></div>
-      <div class="metric"><div class="metric-lbl">tasa de éxito global</div><div class="metric-val" id="mSuccess" style="color:var(--green)">—</div></div>
+      <div class="metric"><div class="metric-lbl">tasa de éxito</div><div class="metric-val" id="mSuccess" style="color:var(--green)">—</div></div>
       <div class="metric"><div class="metric-lbl">éxito directo</div><div class="metric-val" id="mDirect" style="color:var(--blue)">—</div></div>
       <div class="metric"><div class="metric-lbl">tiempo promedio</div><div class="metric-val" id="mTime">—</div></div>
     </div>
-
-    <div id="dashContent"></div>
+    <div id="resultsContent"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
+<div class="toast" id="toast"></div>
+
+<!-- ════════════════════════════════════════════════════
      JAVASCRIPT
-══════════════════════════════════════════ -->
+════════════════════════════════════════════════════ -->
 <script>
-/* ─── DATA ─── */
-const TREE = [
-  {id:1,label:'Inicio',children:[
-    {id:2,label:'Pantalla principal',children:[
-      {id:3,label:'Favoritos',children:[{id:4,label:'Perfil de paseadores recurrentes',children:[]}]},
-      {id:5,label:'Explorar',children:[{id:6,label:'Perfil de nuevos paseadores',children:[]}]}
-    ]}
-  ]},
-  {id:7,label:'Agendar',children:[
-    {id:8,label:'Perfil del paseador',children:[
-      {id:9,label:'Selección fecha / duración / horario',children:[{id:10,label:'Confirmar y pagar',children:[]}]}
-    ]}
-  ]},
-  {id:11,label:'Paseos',children:[
-    {id:12,label:'Activo',children:[
-      {id:13,label:'Mapa en vivo',children:[]},{id:14,label:'Fotos',children:[]},
-      {id:15,label:'Videos',children:[]},{id:16,label:'Chat',children:[]}
-    ]},
-    {id:17,label:'Finalizado',children:[
-      {id:18,label:'Asignar calificación',children:[]},{id:19,label:'Dejar reseña',children:[]},{id:20,label:'Asignar insignia',children:[]}
-    ]},
-    {id:21,label:'Historial',children:[
-      {id:22,label:'Recorrido visual del paseo finalizado',children:[]},{id:23,label:'Consulta de factura',children:[]},{id:24,label:'Calificación y reseña',children:[]}
-    ]}
-  ]},
-  {id:25,label:'Mi perfil',children:[
-    {id:26,label:'Mis perros',children:[
-      {id:27,label:'Datos generales',children:[]},{id:28,label:'Fotos',children:[]},{id:29,label:'Cartilla de vacunación virtual',children:[]}
-    ]},
-    {id:30,label:'Ajustes',children:[
-      {id:31,label:'Método de pago',children:[]},{id:32,label:'Mis ubicaciones',children:[]},
-      {id:33,label:'Notificaciones',children:[]},{id:34,label:'Ayuda y soporte',children:[]},{id:35,label:'Cerrar sesión',children:[]}
-    ]}
-  ]}
-];
+/* ═══ STORAGE ═══ */
+const ADMIN_PWD_KEY = 'tt_admin_pwd';
+const STUDIES_KEY   = 'tt_studies';
+const DEFAULT_ADMIN_PWD = 'admin1234';
 
-const TASKS = [
-  {id:1,text:'¿Dónde irías para ver la ubicación de tu perro en tiempo real durante el paseo?',answer:'Mapa en vivo',answerId:13,depthOk:3},
-  {id:2,text:'Quieres revisar la factura de un paseo anterior. ¿A dónde vas?',answer:'Consulta de factura',answerId:23,depthOk:3},
-  {id:3,text:'Deseas agregar la cartilla de vacunación de tu perro. ¿Dónde lo haces?',answer:'Cartilla de vacunación virtual',answerId:29,depthOk:3},
-  {id:4,text:'¿Cómo agendarías un paseo con un paseador que ya conoces y está en tus favoritos?',answer:'Perfil de paseadores recurrentes',answerId:4,depthOk:4},
-];
+function getAdminPwd() { return localStorage.getItem(ADMIN_PWD_KEY) || DEFAULT_ADMIN_PWD; }
+function getStudies()  { try { return JSON.parse(localStorage.getItem(STUDIES_KEY)||'[]'); } catch(e) { return []; } }
+function saveStudies(s){ localStorage.setItem(STUDIES_KEY, JSON.stringify(s)); }
+function getResponses(sid){ try { return JSON.parse(localStorage.getItem('tt_r_'+sid)||'[]'); } catch(e) { return []; } }
+function saveResponses(sid,r){ localStorage.setItem('tt_r_'+sid, JSON.stringify(r)); }
 
-const TASKS_META = [
-  {id:1,text:TASKS[0].text,answer:'Mapa en vivo',answerId:13,path:['Login / Registro','Paseos','Activo','Mapa en vivo']},
-  {id:2,text:TASKS[1].text,answer:'Consulta de factura',answerId:23,path:['Login / Registro','Paseos','Historial','Consulta de factura']},
-  {id:3,text:TASKS[2].text,answer:'Cartilla de vacunación virtual',answerId:29,path:['Login / Registro','Mi perfil','Mis perros','Cartilla de vacunación virtual']},
-  {id:4,text:TASKS[3].text,answer:'Perfil de paseadores recurrentes',answerId:4,path:['Login / Registro','Inicio','Pantalla principal','Favoritos','Perfil de paseadores recurrentes']},
-];
+/* ═══ STATE ═══ */
+let currentStudyId = null;   // admin
+let viewStudyId    = null;   // participant / results
+let currentAdminTab = 'setup';
+let nodeIdCounter  = 1000;
+let pState = {};             // participant state
 
-const STORAGE_KEY = 'manada_tt_v2';
-const RESEARCHER_PWD = 'manada2024';
+/* ═══ HELPERS ═══ */
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
-/* ─── SCREEN ROUTING ─── */
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const isResults = id === 's-results';
-  const isParticipant = ['s-welcome','s-task','s-thanks'].includes(id);
-  document.getElementById('modeBadge').textContent = isResults ? 'investigador' : 'participante';
-  document.getElementById('modeBadge').className = 'mode-badge ' + (isResults ? 'mode-r' : 'mode-p');
-  document.getElementById('btnSwitchMode').textContent = isResults ? 'modo participante' : 'ver resultados';
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-document.getElementById('btnSwitchMode').addEventListener('click', () => {
-  const active = document.querySelector('.screen.active');
-  if (active && active.id === 's-results') { showScreen('s-welcome'); }
-  else { showScreen('s-gate'); document.getElementById('pwdInput').value=''; document.getElementById('gateErr').textContent=''; }
-});
-
-function checkPwd() {
-  const v = document.getElementById('pwdInput').value;
-  if (v === RESEARCHER_PWD) { showScreen('s-results'); renderDashboard(); }
-  else { document.getElementById('gateErr').textContent = 'Contraseña incorrecta'; document.getElementById('pwdInput').value=''; }
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+id)?.classList.add('active');
 }
 
-/* ─── PARTICIPANT FLOW ─── */
-let currentTask=0, selectedNode=null, selectedPath=[], taskStart=0, timerInt=null, responses=[];
+/* ═══ NAVIGATION ═══ */
+function navigate(target, studyId) {
+  document.getElementById('topStudyTitle').textContent = '';
+  document.getElementById('topbarRight').innerHTML = '';
+
+  if (target === 'home') {
+    showPage('home'); renderHome();
+    document.getElementById('topbarRight').innerHTML = '';
+  }
+  else if (target === 'gate-admin') {
+    showPage('gate-admin');
+    document.getElementById('adminPwdInput').value = '';
+    document.getElementById('adminGateErr').textContent = '';
+  }
+  else if (target === 'admin') {
+    showPage('admin'); renderAdmin();
+    document.getElementById('topbarRight').innerHTML = `
+      <span class="badge badge-blue">investigador</span>
+      <button class="btn btn-ghost" onclick="navigate('home')">salir</button>`;
+  }
+  else if (target === 'study') {
+    viewStudyId = studyId;
+    const s = getStudy(studyId);
+    if (!s) { navigate('home'); return; }
+    document.getElementById('topStudyTitle').textContent = s.name;
+    document.getElementById('topbarRight').innerHTML = `
+      <button class="btn btn-ghost" style="font-size:11px" onclick="navigate('gate-results','${studyId}')">ver resultados</button>`;
+    renderWelcome(s);
+    showPage('welcome');
+  }
+  else if (target === 'gate-results') {
+    viewStudyId = studyId || viewStudyId;
+    showPage('gate-results');
+    document.getElementById('resultsPwdInput').value = '';
+    document.getElementById('resultsGateErr').textContent = '';
+  }
+  else if (target === 'results') {
+    viewStudyId = studyId || viewStudyId;
+    renderResultsPage();
+    showPage('results');
+    const s = getStudy(viewStudyId);
+    document.getElementById('topStudyTitle').textContent = s?.name || '';
+    document.getElementById('topbarRight').innerHTML = `
+      <button class="btn btn-ghost" onclick="navigate('home')">← inicio</button>`;
+  }
+
+  // Sync URL hash
+  const hash = studyId
+    ? `#${target}=${studyId}`
+    : target === 'home' ? '' : `#${target}`;
+  history.replaceState(null, '', location.pathname + hash);
+}
+
+function getStudy(id) { return getStudies().find(s => s.id === id); }
+function updateStudy(updated) {
+  const all = getStudies().map(s => s.id === updated.id ? updated : s);
+  saveStudies(all);
+}
+
+/* ═══ HASH ROUTING ═══ */
+function routeFromHash() {
+  const hash = location.hash.slice(1);
+  if (!hash) { navigate('home'); return; }
+  const [key, val] = hash.split('=');
+  if (key === 'study' && val) { navigate('study', val); }
+  else if (key === 'results' && val) { navigate('gate-results', val); }
+  else if (key === 'admin') { navigate('gate-admin'); }
+  else { navigate('home'); }
+}
+
+/* ═══ HOME ═══ */
+function renderHome() {
+  const studies = getStudies().filter(s => s.status === 'live');
+  const grid = document.getElementById('homeStudiesGrid');
+  const empty = document.getElementById('homeEmpty');
+  if (!studies.length) {
+    grid.innerHTML = ''; empty.style.display = 'block'; return;
+  }
+  empty.style.display = 'none';
+  grid.innerHTML = studies.map(s => `
+    <div class="study-card" onclick="navigate('study','${s.id}')">
+      <div class="study-card-header">
+        <div class="study-card-title">${s.name}</div>
+        <span class="badge badge-live"><span class="dot-live"></span>activo</span>
+      </div>
+      <div class="study-card-desc">${s.description||'Sin descripción'}</div>
+      <div class="study-card-meta">
+        <span>${s.tasks?.length||0} tareas · ${getResponses(s.id).length} respuestas</span>
+        <span style="color:var(--blue);font-weight:600;font-size:12px">participar →</span>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══ ADMIN AUTH ═══ */
+function checkAdminPwd() {
+  const v = document.getElementById('adminPwdInput').value;
+  if (v === getAdminPwd()) { navigate('admin'); }
+  else { document.getElementById('adminGateErr').textContent = 'Contraseña incorrecta'; }
+}
+
+/* ═══ ADMIN ═══ */
+function createStudy() {
+  const s = {
+    id: uid(), name: 'Nuevo estudio', description: '', status: 'draft',
+    welcome: '', farewell: 'Gracias por tu participación.',
+    password: 'resultados', tree: [], tasks: [], createdAt: new Date().toISOString()
+  };
+  const all = getStudies();
+  all.push(s); saveStudies(all);
+  currentStudyId = s.id;
+  currentAdminTab = 'setup';
+  renderAdmin();
+}
+
+function deleteStudy(id) {
+  if (!confirm('¿Eliminar este estudio y todos sus datos?')) return;
+  const all = getStudies().filter(s => s.id !== id);
+  saveStudies(all);
+  localStorage.removeItem('tt_r_'+id);
+  if (currentStudyId === id) currentStudyId = null;
+  renderAdmin();
+}
+
+function renderAdmin() {
+  const studies = getStudies();
+  const sidebar = document.getElementById('adminSidebarList');
+  sidebar.innerHTML = studies.map(s => `
+    <div class="sidebar-study-item ${s.id===currentStudyId?'active':''}" onclick="selectAdminStudy('${s.id}')">
+      <span class="${s.status==='live'?'dot-live':'dot-draft'}"></span>
+      <span class="sidebar-study-name">${s.name}</span>
+    </div>`).join('') || '<div style="padding:8px 12px;font-size:12px;color:var(--text3)">Sin estudios</div>';
+
+  if (!currentStudyId || !getStudy(currentStudyId)) {
+    document.getElementById('adminNoStudy').style.display = 'block';
+    document.getElementById('adminStudyEditor').style.display = 'none';
+    return;
+  }
+  document.getElementById('adminNoStudy').style.display = 'none';
+  document.getElementById('adminStudyEditor').style.display = 'block';
+  document.querySelectorAll('.atab').forEach(t => t.classList.toggle('active', t.dataset.tab === currentAdminTab));
+  renderAdminTab();
+  document.querySelectorAll('.atab').forEach(t => {
+    t.onclick = () => { currentAdminTab = t.dataset.tab; renderAdmin(); };
+  });
+}
+
+function selectAdminStudy(id) { currentStudyId = id; currentAdminTab = 'setup'; renderAdmin(); }
+
+function renderAdminTab() {
+  const s = getStudy(currentStudyId);
+  const body = document.getElementById('adminTabBody');
+  if      (currentAdminTab === 'setup')   body.innerHTML = renderSetupTab(s);
+  else if (currentAdminTab === 'tree')    { body.innerHTML = renderTreeTab(s); }
+  else if (currentAdminTab === 'tasks')   body.innerHTML = renderTasksTab(s);
+  else if (currentAdminTab === 'share')   body.innerHTML = renderShareTab(s);
+  else if (currentAdminTab === 'results') renderResultsInAdmin(s);
+}
+
+/* ── SETUP TAB ── */
+function renderSetupTab(s) {
+  return `
+  <div style="max-width:600px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <div>
+        <h3>${s.name}</h3>
+        <span class="badge ${s.status==='live'?'badge-live':'badge-draft'}">${s.status==='live'?'activo':'borrador'}</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn ${s.status==='live'?'btn-danger':'btn-green'}" onclick="toggleStatus('${s.id}')">
+          ${s.status==='live'?'pausar estudio':'lanzar estudio'}
+        </button>
+        <button class="btn btn-danger" onclick="deleteStudy('${s.id}')">eliminar</button>
+      </div>
+    </div>
+    <div class="field"><label>Nombre del estudio</label>
+      <input type="text" id="sf-name" value="${s.name}" oninput="autosaveSetup()"></div>
+    <div class="field"><label>Descripción</label>
+      <textarea id="sf-desc" rows="2" oninput="autosaveSetup()">${s.description||''}</textarea></div>
+    <div class="field"><label>Mensaje de bienvenida</label>
+      <textarea id="sf-welcome" rows="4" placeholder="Texto que verán los participantes al iniciar..." oninput="autosaveSetup()">${s.welcome||''}</textarea></div>
+    <div class="field"><label>Mensaje de cierre</label>
+      <textarea id="sf-farewell" rows="3" placeholder="Texto al finalizar el estudio..." oninput="autosaveSetup()">${s.farewell||''}</textarea></div>
+    <div class="field"><label>Contraseña para ver resultados</label>
+      <input type="text" id="sf-pwd" value="${s.password||''}" oninput="autosaveSetup()" style="max-width:220px"></div>
+    <div class="field"><label>Contraseña de administrador (global)</label>
+      <div style="display:flex;gap:8px;max-width:320px">
+        <input type="text" id="sf-adminpwd" placeholder="${getAdminPwd()}" style="flex:1">
+        <button class="btn" onclick="changeAdminPwd()">cambiar</button>
+      </div>
+      <span style="font-size:11px;color:var(--text3);margin-top:4px;display:block">Contraseña actual: ${getAdminPwd()}</span>
+    </div>
+    <p id="autosave-msg" style="font-size:11px;color:var(--text3);margin-top:8px;min-height:16px"></p>
+  </div>`;
+}
+
+let autosaveTimer = null;
+function autosaveSetup() {
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    const s = getStudy(currentStudyId); if (!s) return;
+    s.name        = document.getElementById('sf-name')?.value || s.name;
+    s.description = document.getElementById('sf-desc')?.value || '';
+    s.welcome     = document.getElementById('sf-welcome')?.value || '';
+    s.farewell    = document.getElementById('sf-farewell')?.value || '';
+    s.password    = document.getElementById('sf-pwd')?.value || '';
+    updateStudy(s);
+    const msg = document.getElementById('autosave-msg');
+    if (msg) msg.textContent = 'guardado · ' + new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    renderAdmin(); // refresh sidebar name
+  }, 600);
+}
+
+function changeAdminPwd() {
+  const v = document.getElementById('sf-adminpwd')?.value.trim();
+  if (!v) return;
+  localStorage.setItem(ADMIN_PWD_KEY, v);
+  toast('Contraseña de administrador actualizada');
+  renderAdminTab();
+}
+
+function toggleStatus(id) {
+  const s = getStudy(id); if (!s) return;
+  s.status = s.status === 'live' ? 'draft' : 'live';
+  updateStudy(s); renderAdmin(); toast(s.status === 'live' ? 'Estudio lanzado' : 'Estudio pausado');
+}
+
+/* ── TREE TAB ── */
+const LEVEL_COLORS = ['#185FA5','#378ADD','#1D9E75','#EF9F27','#D85A30','#7F77DD'];
+
+function renderTreeTab(s) {
+  const rows = s.tree.map((n,i) => {
+    const color = LEVEL_COLORS[Math.min(n.level, LEVEL_COLORS.length-1)];
+    return `<div class="te-node" data-id="${n.id}">
+      <div class="te-indent" style="width:${n.level*20}px"></div>
+      <span class="te-toggle">·</span>
+      <div class="te-dot" style="background:${color}"></div>
+      <div class="te-label"><input type="text" value="${n.label}" data-nid="${n.id}" onchange="renameNode(this)"></div>
+      <span class="te-lvl">N${n.level}</span>
+      <div class="te-actions">
+        <button class="te-btn" onclick="addChild('${n.id}')" title="hijo">+</button>
+        <button class="te-btn" onclick="addSibling('${n.id}')" title="hermano">↓</button>
+        <button class="te-btn" onclick="indentNode('${n.id}',1)" title="→">→</button>
+        <button class="te-btn" onclick="indentNode('${n.id}',-1)" title="←">←</button>
+        <button class="te-btn del" onclick="deleteNode('${n.id}')" title="eliminar">×</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('adminTabBody').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div>
+        <h3>Árbol de navegación</h3>
+        <p class="muted" style="margin-top:2px">${s.tree.length} nodos · ${[...new Set(s.tree.map(n=>n.level))].length} niveles</p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="importSampleTree()">cargar árbol Manada</button>
+      </div>
+    </div>
+    <div class="tree-editor">
+      <div class="tree-toolbar">
+        <button class="btn btn-blue" onclick="addRoot()">+ nodo raíz</button>
+        <button class="btn" onclick="expandAll()">expandir</button>
+        <button class="btn" onclick="collapseAll()">colapsar</button>
+        <button class="btn btn-danger" onclick="clearTree()" style="margin-left:auto">limpiar árbol</button>
+      </div>
+      <div class="tree-body" id="adminTreeBody">${rows||'<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">El árbol está vacío. Añade nodos raíz para comenzar.</div>'}</div>
+    </div>`;
+}
+
+function treeOp(fn) {
+  const s = getStudy(currentStudyId); if (!s) return;
+  fn(s); updateStudy(s); renderAdminTab();
+}
+
+function addRoot()       { treeOp(s => s.tree.push({id:'n'+uid(),label:'Nuevo nodo',level:0})); }
+function clearTree()     { if(confirm('¿Limpiar todo el árbol?')) treeOp(s => s.tree=[]); }
+function expandAll()     {}
+function collapseAll()   {}
+
+function renameNode(inp) {
+  treeOp(s => { const n=s.tree.find(x=>x.id===inp.dataset.nid); if(n) n.label=inp.value; });
+}
+function addChild(id) {
+  treeOp(s => {
+    const idx=s.tree.findIndex(n=>n.id===id);
+    s.tree.splice(idx+1,0,{id:'n'+uid(),label:'Nuevo nodo',level:s.tree[idx].level+1});
+  });
+}
+function addSibling(id) {
+  treeOp(s => {
+    const idx=s.tree.findIndex(n=>n.id===id);
+    s.tree.splice(idx+1,0,{id:'n'+uid(),label:'Nuevo nodo',level:s.tree[idx].level});
+  });
+}
+function indentNode(id,dir) {
+  treeOp(s => {
+    const n=s.tree.find(x=>x.id===id);
+    if(n) n.level=Math.max(0,Math.min(5,n.level+dir));
+  });
+}
+function deleteNode(id) {
+  treeOp(s => { s.tree=s.tree.filter(n=>n.id!==id); });
+}
+
+function importSampleTree() {
+  if (!confirm('¿Reemplazar el árbol actual con la arquitectura de Manada?')) return;
+  treeOp(s => {
+    s.tree = [
+      {id:'n1',label:'Inicio',level:0},{id:'n2',label:'Pantalla principal',level:1},
+      {id:'n3',label:'Favoritos',level:2},{id:'n4',label:'Perfil de paseadores recurrentes',level:3},
+      {id:'n5',label:'Explorar',level:2},{id:'n6',label:'Perfil de nuevos paseadores',level:3},
+      {id:'n7',label:'Agendar',level:0},{id:'n8',label:'Perfil del paseador',level:1},
+      {id:'n9',label:'Selección fecha / duración / horario',level:2},{id:'n10',label:'Confirmar y pagar',level:3},
+      {id:'n11',label:'Paseos',level:0},{id:'n12',label:'Activo',level:1},
+      {id:'n13',label:'Mapa en vivo',level:2},{id:'n14',label:'Fotos',level:2},
+      {id:'n15',label:'Videos',level:2},{id:'n16',label:'Chat',level:2},
+      {id:'n17',label:'Finalizado',level:1},{id:'n18',label:'Asignar calificación',level:2},
+      {id:'n19',label:'Dejar reseña',level:2},{id:'n20',label:'Asignar insignia',level:2},
+      {id:'n21',label:'Historial',level:1},{id:'n22',label:'Recorrido visual del paseo finalizado',level:2},
+      {id:'n23',label:'Consulta de factura',level:2},{id:'n24',label:'Calificación y reseña',level:2},
+      {id:'n25',label:'Mi perfil',level:0},{id:'n26',label:'Mis perros',level:1},
+      {id:'n27',label:'Datos generales',level:2},{id:'n28',label:'Fotos',level:2},
+      {id:'n29',label:'Cartilla de vacunación virtual',level:2},
+      {id:'n30',label:'Ajustes',level:1},{id:'n31',label:'Método de pago',level:2},
+      {id:'n32',label:'Mis ubicaciones',level:2},{id:'n33',label:'Notificaciones',level:2},
+      {id:'n34',label:'Ayuda y soporte',level:2},{id:'n35',label:'Cerrar sesión',level:2}
+    ];
+  });
+  toast('Árbol de Manada cargado');
+}
+
+/* ── TASKS TAB ── */
+function renderTasksTab(s) {
+  const rows = (s.tasks||[]).map((t,i) => `
+    <div class="task-editor-item">
+      <div class="task-editor-head">
+        <div class="task-num">${i+1}</div>
+        <input type="text" value="${t.text}" style="flex:1;border:none;background:transparent;font-size:13px;font-family:inherit;color:var(--text);outline:none" onchange="updateTask('${t.id}','text',this.value)" placeholder="Escribe la tarea...">
+        <button class="btn btn-icon btn-ghost" onclick="deleteTask('${t.id}')">×</button>
+      </div>
+      <div class="task-editor-body">
+        <div class="field" style="margin:0">
+          <label>Nodo de respuesta correcta</label>
+          <select onchange="updateTask('${t.id}','answerId',this.value)">
+            <option value="">— seleccionar nodo —</option>
+            ${s.tree.map(n => `<option value="${n.id}" ${n.id===t.answerId?'selected':''}>${'  '.repeat(n.level)}${n.label}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>`).join('');
+  return `
+    <div style="max-width:640px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div><h3>Tareas del estudio</h3><p class="muted" style="margin-top:2px">${s.tasks?.length||0} tareas configuradas</p></div>
+      </div>
+      <div id="tasksContainer">${rows||'<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">Sin tareas. Añade la primera tarea.</div>'}</div>
+      <button class="btn btn-blue" style="width:100%;margin-top:10px" onclick="addTask()">+ añadir tarea</button>
+    </div>`;
+}
+
+function addTask() {
+  treeOp(s => {
+    s.tasks = s.tasks||[];
+    s.tasks.push({id:'t'+uid(),text:'',answerId:''});
+  });
+}
+function deleteTask(id) { treeOp(s => { s.tasks=s.tasks.filter(t=>t.id!==id); }); }
+function updateTask(id,field,val) {
+  const s=getStudy(currentStudyId); if(!s) return;
+  const t=s.tasks.find(x=>x.id===id); if(t) t[field]=val;
+  updateStudy(s);
+}
+
+/* ── SHARE TAB ── */
+function renderShareTab(s) {
+  const base = location.href.split('#')[0];
+  const participantURL = base + '#study=' + s.id;
+  const resultsURL    = base + '#results=' + s.id;
+  return `
+    <div style="max-width:600px">
+      <h3 style="margin-bottom:16px">Compartir estudio</h3>
+      <div class="field">
+        <label>Enlace para participantes</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" value="${participantURL}" readonly style="color:var(--text2);font-size:12px">
+          <button class="btn btn-blue" onclick="copyLink('${participantURL}')">copiar</button>
+        </div>
+        <span style="font-size:11px;color:var(--text3);margin-top:4px;display:block">Comparte este enlace con los participantes del estudio</span>
+      </div>
+      <div class="field">
+        <label>Enlace para ver resultados</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" value="${resultsURL}" readonly style="color:var(--text2);font-size:12px">
+          <button class="btn btn-blue" onclick="copyLink('${resultsURL}')">copiar</button>
+        </div>
+        <span style="font-size:11px;color:var(--text3);margin-top:4px;display:block">Contraseña: <strong>${s.password||'(sin contraseña)'}</strong></span>
+      </div>
+      <div style="background:var(--bg2);border-radius:var(--r);padding:14px 16px;margin-top:8px">
+        <p style="font-size:12px;color:var(--text2);line-height:1.7">
+          <strong>Nota:</strong> Los datos se guardan en el navegador vía <code>localStorage</code>.<br>
+          Para que los participantes remotos puedan contribuir al mismo dataset, sube este archivo a un servidor web
+          (GitHub Pages, Netlify, etc.) y comparte la URL generada.
+        </p>
+      </div>
+    </div>`;
+}
+
+function copyLink(url) {
+  navigator.clipboard.writeText(url).then(() => toast('Enlace copiado')).catch(() => {
+    const inp = document.createElement('input');
+    inp.value = url; document.body.appendChild(inp); inp.select();
+    document.execCommand('copy'); inp.remove(); toast('Enlace copiado');
+  });
+}
+
+/* ── RESULTS IN ADMIN ── */
+function renderResultsInAdmin(s) {
+  viewStudyId = s.id;
+  renderResultsPage();
+  document.getElementById('adminTabBody').innerHTML = `<div id="resultsInAdminMount"></div>`;
+  document.getElementById('resultsInAdminMount').appendChild(
+    (() => { const d = document.createElement('div'); d.innerHTML = document.getElementById('page-results').innerHTML; return d; })()
+  );
+}
+
+/* ═══ RESULTS AUTH ═══ */
+function checkResultsPwd() {
+  const s = getStudy(viewStudyId);
+  const v = document.getElementById('resultsPwdInput').value;
+  const ok = !s?.password || v === s?.password || v === getAdminPwd();
+  if (ok) { navigate('results', viewStudyId); }
+  else { document.getElementById('resultsGateErr').textContent = 'Contraseña incorrecta'; }
+}
+
+/* ═══ PARTICIPANT FLOW ═══ */
+function renderWelcome(s) {
+  document.getElementById('welcomeContent').innerHTML = `
+    <h2>${s.name}</h2>
+    <p class="muted" style="margin-top:8px;margin-bottom:20px">${s.welcome||'Gracias por participar. Te pediremos que encuentres elementos en la estructura de navegación.'}</p>
+    <div style="background:var(--bg2);border-radius:var(--r);padding:14px 16px">
+      <p style="font-size:13px;color:var(--text2);line-height:1.8">· <strong>${s.tasks?.length||0} tareas</strong> de navegación</p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.8">· Puedes omitir cualquier tarea</p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.8">· Tus respuestas son anónimas</p>
+    </div>`;
+}
+
+function startParticipant() {
+  const s = getStudy(viewStudyId); if (!s || !s.tasks?.length) { toast('Este estudio no tiene tareas'); return; }
+  pState = { taskIdx:0, responses:[], sessionStart:Date.now() };
+  showPage('task');
+  loadTask();
+}
 
 function buildPathTo(targetId, nodes, path) {
   for (const n of nodes) {
     const p = [...path, n.label];
     if (n.id === targetId) return p;
-    const f = buildPathTo(targetId, n.children, p);
+    const f = buildPathTo(targetId, n.children||[], p);
     if (f) return f;
   }
   return null;
 }
 
-function buildTreeDOM(nodes, ul) {
+function flatToNested(flat) {
+  if (!flat || !flat.length) return [];
+  const roots = [];
+  const stack = [];
+  flat.forEach(node => {
+    const n = { ...node, children:[] };
+    while (stack.length && stack[stack.length-1].level >= n.level) stack.pop();
+    if (!stack.length) roots.push(n);
+    else stack[stack.length-1].children.push(n);
+    stack.push(n);
+  });
+  return roots;
+}
+
+function buildTreeDOM(nodes, ul, pathFn) {
   nodes.forEach(n => {
     const li = document.createElement('li');
-    li.className = 'tree-li';
-    li.dataset.id = n.id;
-    const tog = document.createElement('span');
-    tog.className = 'tog';
-    tog.textContent = n.children.length ? '▸' : '·';
+    li.className = 'tree-li'; li.dataset.id = n.id;
+    const tog = document.createElement('span'); tog.className = 'tog';
+    tog.textContent = n.children?.length ? '▸' : '·';
     li.appendChild(tog);
     li.appendChild(document.createTextNode(n.label));
     ul.appendChild(li);
-    if (n.children.length) {
-      const sub = document.createElement('ul');
-      sub.className = 'children-ul';
-      buildTreeDOM(n.children, sub);
+    if (n.children?.length) {
+      const sub = document.createElement('ul'); sub.className = 'children-ul';
+      buildTreeDOM(n.children, sub, pathFn);
       ul.appendChild(sub);
       li.addEventListener('click', e => {
         e.stopPropagation();
         const open = sub.classList.toggle('open');
         tog.textContent = open ? '▾' : '▸';
-        selectNode(n.id, n.label);
+        pSelectNode(n.id, n.label, pathFn);
       });
     } else {
-      li.addEventListener('click', e => { e.stopPropagation(); selectNode(n.id, n.label); });
+      li.addEventListener('click', e => { e.stopPropagation(); pSelectNode(n.id, n.label, pathFn); });
     }
   });
 }
 
-function selectNode(id, label) {
+function pSelectNode(id, label, pathFn) {
   document.querySelectorAll('.tree-li').forEach(l => l.classList.remove('selected'));
   document.querySelector(`.tree-li[data-id="${id}"]`)?.classList.add('selected');
-  selectedNode = { id, label };
-  selectedPath = buildPathTo(id, TREE, []) || [];
+  pState.selectedNode = { id, label };
+  pState.selectedPath = pathFn(id) || [];
   document.getElementById('selLabel').textContent = label;
   document.getElementById('btnConfirm').disabled = false;
-  const full = ['Login / Registro', ...selectedPath];
+  const full = [getStudy(viewStudyId)?.name||'Inicio', ...pState.selectedPath];
   document.getElementById('breadcrumb').innerHTML = full.map((p,i,a) =>
-    i===a.length-1 ? `<span class="node">${p}</span>` : `<span>${p}</span><span class="sep">›</span>`
-  ).join(' ');
+    i===a.length-1 ? `<span class="bcnode">${p}</span>` : `<span>${p}</span><span class="bcsep"> › </span>`
+  ).join('');
 }
 
-function startTask(idx) {
-  currentTask = idx; selectedNode = null; selectedPath = [];
-  const t = TASKS[idx];
-  document.getElementById('taskQ').textContent = `${idx+1}. ${t.text}`;
-  document.getElementById('taskCounter').textContent = `Tarea ${idx+1} de ${TASKS.length}`;
-  document.getElementById('progBar').style.width = `${((idx+1)/TASKS.length)*100}%`;
+function loadTask() {
+  const s = getStudy(viewStudyId); if (!s) return;
+  const t = s.tasks[pState.taskIdx];
+  const nested = flatToNested(s.tree);
+  const pathFn = id => buildPathTo(id, nested, []);
+  pState.selectedNode = null; pState.selectedPath = [];
+  pState.taskStart = Date.now();
+  if (pState.timerInt) clearInterval(pState.timerInt);
+  pState.timerInt = setInterval(() => {
+    document.getElementById('timerChip').textContent = Math.round((Date.now()-pState.taskStart)/1000)+'s';
+  }, 500);
+  document.getElementById('taskQ').textContent = `${pState.taskIdx+1}. ${t.text}`;
+  document.getElementById('taskCounter').textContent = `Tarea ${pState.taskIdx+1} de ${s.tasks.length}`;
+  document.getElementById('progBar').style.width = `${((pState.taskIdx+1)/s.tasks.length)*100}%`;
   document.getElementById('selLabel').textContent = '— ninguno —';
   document.getElementById('btnConfirm').disabled = true;
-  document.getElementById('breadcrumb').innerHTML = '<span style="color:var(--text2)">Login / Registro</span>';
-  const root = document.getElementById('treeRoot');
-  root.innerHTML = '';
-  buildTreeDOM(TREE, root);
-  taskStart = Date.now();
-  clearInterval(timerInt);
-  timerInt = setInterval(() => {
-    document.getElementById('timerChip').textContent = Math.round((Date.now()-taskStart)/1000) + 's';
-  }, 500);
-  showScreen('s-task');
+  document.getElementById('breadcrumb').innerHTML = `<span style="color:var(--text2)">${s.name}</span>`;
+  const root = document.getElementById('treeRoot'); root.innerHTML = '';
+  buildTreeDOM(nested, root, pathFn);
 }
 
 function submitTask(skipped) {
-  clearInterval(timerInt);
-  const elapsed = Math.round((Date.now()-taskStart)/1000);
-  const t = TASKS[currentTask];
+  clearInterval(pState.timerInt);
+  const s = getStudy(viewStudyId);
+  const t = s.tasks[pState.taskIdx];
+  const elapsed = Math.round((Date.now()-pState.taskStart)/1000);
   let outcome = 'skip', direct = false;
-  if (!skipped && selectedNode) {
-    if (selectedNode.id === t.answerId) {
+  if (!skipped && pState.selectedNode) {
+    if (pState.selectedNode.id === t.answerId) {
       outcome = 'success';
-      direct = selectedPath.length <= t.depthOk;
-    } else {
-      outcome = 'fail';
-    }
+      direct = pState.selectedPath.length <= 3;
+    } else { outcome = 'fail'; }
   }
-  responses.push({ taskId:t.id, taskText:t.text, selectedId:selectedNode?.id||null,
-    selectedLabel:selectedNode?.label||null, correctAnswer:t.answer,
-    outcome, direct, timeSecs:elapsed, path:selectedPath });
-  if (currentTask < TASKS.length-1) { startTask(currentTask+1); }
-  else { saveAndFinish(); }
+  pState.responses.push({
+    taskId:t.id, taskText:t.text,
+    selectedId:pState.selectedNode?.id||null, selectedLabel:pState.selectedNode?.label||null,
+    correctAnswer: s.tree.find(n=>n.id===t.answerId)?.label||'',
+    outcome, direct, timeSecs:elapsed, path:pState.selectedPath
+  });
+  if (pState.taskIdx < s.tasks.length-1) {
+    pState.taskIdx++; loadTask();
+  } else { finishParticipant(); }
 }
 
-function saveAndFinish() {
-  const sessionId = 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
-  const data = { sessionId, timestamp: new Date().toISOString(), responses };
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const all = raw ? JSON.parse(raw) : [];
-    all.push(data);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
-  } catch(e) { console.error(e); }
-  const s = responses.filter(r=>r.outcome==='success').length;
-  const f = responses.filter(r=>r.outcome==='fail').length;
-  const sk = responses.filter(r=>r.outcome==='skip').length;
+function finishParticipant() {
+  const s = getStudy(viewStudyId);
+  const session = { sessionId:'p_'+uid(), timestamp:new Date().toISOString(), responses:pState.responses };
+  const all = getResponses(viewStudyId);
+  all.push(session);
+  saveResponses(viewStudyId, all);
+  const ok  = pState.responses.filter(r=>r.outcome==='success').length;
+  const bad = pState.responses.filter(r=>r.outcome==='fail').length;
+  const sk  = pState.responses.filter(r=>r.outcome==='skip').length;
+  document.getElementById('farewellMsg').textContent = s?.farewell || 'Gracias por tu participación.';
   document.getElementById('resSummary').innerHTML = `
-    <div class="res-cell" style="background:var(--green-bg)"><div class="rl" style="color:var(--green-text)">correctas</div><div class="rv" style="color:var(--green-text)">${s}</div></div>
-    <div class="res-cell" style="background:var(--red-bg)"><div class="rl" style="color:var(--red-text)">incorrectas</div><div class="rv" style="color:var(--red-text)">${f}</div></div>
-    <div class="res-cell" style="background:var(--bg2)"><div class="rl" style="color:var(--text2)">omitidas</div><div class="rv">${sk}</div></div>`;
-  showScreen('s-thanks');
+    <div class="res-cell" style="background:var(--green-bg)"><div class="rc-lbl" style="color:var(--green)">correctas</div><div class="rc-val" style="color:var(--green)">${ok}</div></div>
+    <div class="res-cell" style="background:var(--red-bg)"><div class="rc-lbl" style="color:var(--red)">incorrectas</div><div class="rc-val" style="color:var(--red)">${bad}</div></div>
+    <div class="res-cell" style="background:var(--bg3)"><div class="rc-lbl" style="color:var(--text2)">omitidas</div><div class="rc-val">${sk}</div></div>`;
+  showPage('thanks');
 }
 
-function resetParticipant() {
-  responses = [];
-  showScreen('s-welcome');
-}
-
-/* ─── DASHBOARD ─── */
+/* ═══ RESULTS DASHBOARD ═══ */
 const chartInstances = {};
 
-function loadSessions() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-  catch(e) { return []; }
-}
-
-function renderDashboard() {
-  const sessions = loadSessions();
+function renderResultsPage() {
+  const s = getStudy(viewStudyId); if (!s) return;
+  const sessions = getResponses(viewStudyId);
   const n = sessions.length;
-  document.getElementById('lastUpdate').textContent = 'actualizado ' + new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  document.getElementById('partCount').textContent = n + (n===1?' participante':' participantes');
-
-  const allR = sessions.flatMap(s => s.responses);
-  const succR = allR.filter(r => r.outcome==='success');
+  document.getElementById('resultsStudyName').textContent = 'Resultados — ' + s.name;
+  document.getElementById('resultsLastUpdate').textContent = 'actualizado ' + new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const allR = sessions.flatMap(x=>x.responses);
+  const succR = allR.filter(r=>r.outcome==='success');
   const gS = allR.length ? Math.round((succR.length/allR.length)*100) : 0;
   const gD = allR.length ? Math.round((succR.filter(r=>r.direct).length/allR.length)*100) : 0;
   const times = allR.filter(r=>r.timeSecs>0).map(r=>r.timeSecs);
   const avgT = times.length ? (times.reduce((a,b)=>a+b,0)/times.length).toFixed(1) : '—';
   document.getElementById('mPart').textContent = n;
   document.getElementById('mSuccess').textContent = n ? gS+'%' : '—';
-  document.getElementById('mDirect').textContent = n ? gD+'%' : '—';
-  document.getElementById('mTime').textContent = n ? avgT+'s' : '—';
-
-  const cont = document.getElementById('dashContent');
-
-  if (n === 0) {
-    cont.innerHTML = `<div class="empty-box">
-      <h3>Sin respuestas todavía</h3>
-      <p>Comparte este archivo con los participantes.<br>Cuando completen el estudio sus datos aparecerán aquí.</p>
-      <div class="hint-box">La contraseña de investigador es: <strong>${RESEARCHER_PWD}</strong><br>Puedes cambiarla editando la variable <code>RESEARCHER_PWD</code> en el código.</div>
-    </div>`;
+  document.getElementById('mDirect').textContent  = n ? gD+'%' : '—';
+  document.getElementById('mTime').textContent    = n ? avgT+'s' : '—';
+  const cont = document.getElementById('resultsContent');
+  if (!n) {
+    cont.innerHTML = `<div class="empty-state"><h3>Sin respuestas todavía</h3>
+      <p class="muted">Comparte el enlace de participación para recopilar datos.<br>
+      Los resultados aparecerán aquí en cuanto alguien complete el estudio.</p></div>`;
     return;
   }
+  const axis100 = [0,10,20,30,40,50,60,70,80,90,100].map(v=>`<span>${v}</span>`).join('');
+  const axis20  = [0,5,10,15,20].map(v=>`<span>${v}</span>`).join('');
+  const axis10  = [0,1,2,3,4,5,6,7,8,9,10].map(v=>`<span>${v}</span>`).join('');
+  const lo = v => Math.max(0,v-14), hi = v => Math.min(100,v+20);
+  const tLo = v => Math.max(0,(v-4)/20*100), tHi = v => Math.min(100,(v+5)/20*100);
 
-  cont.innerHTML = TASKS_META.map((tm, idx) => {
-    const rows = sessions.map(s => s.responses.find(r=>r.taskId===tm.id)).filter(Boolean);
+  cont.innerHTML = s.tasks.map((t,idx) => {
+    const rows = sessions.map(x=>x.responses.find(r=>r.taskId===t.id)).filter(Boolean);
     const tn = rows.length;
-    const pathHTML = tm.path.map((p,i,a) =>
-      i===a.length-1 ? `<span class="node">${p}</span>` : `<span>${p}</span><span class="sep"> › </span>`
-    ).join('');
-    if (tn === 0) return `<div class="task-card">
-      <div class="task-head"><div class="task-badge">${idx+1}</div>
-        <div><div class="task-q-text">${tm.text}</div><div class="breadcrumb">${pathHTML}</div></div></div>
-      <div class="no-data">Sin respuestas para esta tarea</div></div>`;
+    const answerNode = s.tree.find(n=>n.id===t.answerId);
+    const pathNodes = [];
+    if (answerNode) {
+      let target = answerNode;
+      const flat = s.tree;
+      const pathToNode = (nid) => {
+        const path = [];
+        const nested = flatToNested(flat);
+        const find = (nodes, nid, acc) => {
+          for (const n of nodes) {
+            const p = [...acc, n.label];
+            if (n.id === nid) return p;
+            const f = find(n.children||[], nid, p);
+            if (f) return f;
+          }
+          return null;
+        };
+        return find(nested, nid, []) || [];
+      };
+      pathNodes.push(...pathToNode(t.answerId));
+    }
+    const pathHTML = pathNodes.length
+      ? [s.name, ...pathNodes].map((p,i,a) => i===a.length-1 ? `<span class="bcnode">${p}</span>` : `<span>${p}</span><span class="bcsep"> › </span>`).join('')
+      : `<span style="color:var(--text3)">Sin respuesta configurada</span>`;
+    if (!tn) return `<div class="result-card">
+      <div class="result-head"><div class="task-badge">${idx+1}</div>
+        <div><div class="task-q-text" style="font-size:14px;font-weight:700;margin-bottom:4px">${t.text}</div>
+        <div class="bc">${pathHTML}</div></div></div>
+      <div style="padding:32px;text-align:center;color:var(--text3);font-size:13px">Sin respuestas para esta tarea</div></div>`;
 
     const succD=rows.filter(r=>r.outcome==='success'&&r.direct).length;
     const succI=rows.filter(r=>r.outcome==='success'&&!r.direct).length;
     const failD=rows.filter(r=>r.outcome==='fail'&&r.direct).length;
     const failI=rows.filter(r=>r.outcome==='fail'&&!r.direct).length;
     const skipN=rows.filter(r=>r.outcome==='skip').length;
-    const totalS=succD+succI, totalF=failD+failI;
-    const sP=Math.round((totalS/tn)*100), fP=Math.round((totalF/tn)*100), skP=Math.round((skipN/tn)*100);
+    const tS=succD+succI, tF=failD+failI;
+    const sP=Math.round((tS/tn)*100), fP=Math.round((tF/tn)*100), skP=Math.round((skipN/tn)*100);
     const dP=Math.round((succD/tn)*100);
     const tt=rows.filter(r=>r.timeSecs>0).map(r=>r.timeSecs);
     const aT=tt.length?(tt.reduce((a,b)=>a+b,0)/tt.length).toFixed(1):0;
     const score=Math.round(sP/10);
-    const lo=v=>Math.max(0,v-14), hi=v=>Math.min(100,v+20);
-    const tLo=v=>Math.max(0,(v-4)/20*100), tHi=v=>Math.min(100,(v+5)/20*100);
-    const axis100=[0,10,20,30,40,50,60,70,80,90,100].map(v=>`<span>${v}</span>`).join('');
-    const axis20=[0,5,10,15,20].map(v=>`<span>${v}</span>`).join('');
-    const axis10=[0,1,2,3,4,5,6,7,8,9,10].map(v=>`<span>${v}</span>`).join('');
 
-    return `<div class="task-card">
-      <div class="task-head">
+    return `<div class="result-card">
+      <div class="result-head">
         <div class="task-badge">${idx+1}</div>
-        <div><div class="task-q-text">${tm.text}</div><div class="breadcrumb">${pathHTML}</div></div>
+        <div style="flex:1">
+          <div class="task-q-text" style="font-size:14px;font-weight:700;margin-bottom:4px">${t.text}</div>
+          <div class="bc">${pathHTML}</div>
+        </div>
+        <span style="font-size:12px;color:var(--text2);white-space:nowrap">${tn} resp.</span>
       </div>
-      <div class="task-body">
+      <div class="result-body">
         <div>
-          <div class="pie-wrap"><canvas id="pie_${tm.id}"></canvas>
+          <div class="pie-wrap"><canvas id="pie_${t.id}"></canvas>
             <div class="pie-center"><div class="pie-pct">${sP}%</div><div class="pie-sub">éxito</div></div>
           </div>
           <table class="legend-tbl">
             <tr>
               <td style="width:14px"><div class="ldot" style="background:#7F77DD"></div></td>
               <td>Éxito</td>
-              <td class="dim">Dir <strong style="color:#534AB7">${succD}</strong></td>
-              <td class="dim">Ind <strong style="color:#534AB7">${succI}</strong></td>
-              <td style="font-weight:700;text-align:right">${totalS}</td>
+              <td style="font-size:11px;color:var(--text2)">Dir <strong style="color:#534AB7">${succD}</strong></td>
+              <td style="font-size:11px;color:var(--text2)">Ind <strong style="color:#534AB7">${succI}</strong></td>
+              <td style="font-weight:700;text-align:right">${tS}</td>
               <td style="color:var(--text2);text-align:right;padding-left:6px">${sP}%</td>
             </tr>
             <tr>
               <td><div class="ldot" style="background:#D85A30"></div></td>
               <td>Fallo</td>
-              <td class="dim">Dir <strong style="color:#993C1D">${failD}</strong></td>
-              <td class="dim">Ind <strong style="color:#993C1D">${failI}</strong></td>
-              <td style="font-weight:700;text-align:right">${totalF}</td>
+              <td style="font-size:11px;color:var(--text2)">Dir <strong style="color:#993C1D">${failD}</strong></td>
+              <td style="font-size:11px;color:var(--text2)">Ind <strong style="color:#993C1D">${failI}</strong></td>
+              <td style="font-weight:700;text-align:right">${tF}</td>
               <td style="color:var(--text2);text-align:right;padding-left:6px">${fP}%</td>
             </tr>
             <tr>
               <td><div class="ldot" style="background:#B4B2A9"></div></td>
-              <td>Omitida</td><td class="dim"></td><td class="dim"></td>
+              <td>Omitida</td><td></td><td></td>
               <td style="font-weight:700;text-align:right">${skipN}</td>
               <td style="color:var(--text2);text-align:right;padding-left:6px">${skP}%</td>
             </tr>
@@ -586,38 +1142,28 @@ function renderDashboard() {
         <div class="bars-col">
           <div class="bar-grp">
             <div class="bar-top"><span class="bar-lbl">Success</span><span class="bar-val">${sP}%</span></div>
-            <div class="bar-track">
-              <div class="bar-fill" style="width:${sP}%;background:#4cae4f"></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${sP}%;background:#4cae4f"></div>
               <div class="ci-span" style="left:${lo(sP)}%;width:${hi(sP)-lo(sP)}%"></div>
-              <div class="ci-tick" style="left:${lo(sP)}%"></div>
-              <div class="ci-tick" style="left:${hi(sP)}%"></div>
-            </div>
+              <div class="ci-tick" style="left:${lo(sP)}%"></div><div class="ci-tick" style="left:${hi(sP)}%"></div></div>
             <div class="axis">${axis100}</div>
           </div>
           <div class="bar-grp">
             <div class="bar-top"><span class="bar-lbl">Directness</span><span class="bar-val">${dP}%</span></div>
-            <div class="bar-track">
-              <div class="bar-fill" style="width:${dP}%;background:#2176be"></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${dP}%;background:#2176be"></div>
               <div class="ci-span" style="left:${lo(dP)}%;width:${hi(dP)-lo(dP)}%"></div>
-              <div class="ci-tick" style="left:${lo(dP)}%"></div>
-              <div class="ci-tick" style="left:${hi(dP)}%"></div>
-            </div>
+              <div class="ci-tick" style="left:${lo(dP)}%"></div><div class="ci-tick" style="left:${hi(dP)}%"></div></div>
             <div class="axis">${axis100}</div>
           </div>
           <div class="bar-grp">
             <div class="bar-top"><span class="bar-lbl">Time taken</span><span class="bar-val">${aT}s</span></div>
             <div class="bar-track" style="background:var(--bg3)">
               <div class="time-inner" style="left:${tLo(+aT)}%;width:${Math.max(4,tHi(+aT)-tLo(+aT))}%"></div>
-              <div class="ci-tick" style="left:${tLo(+aT)}%"></div>
-              <div class="ci-tick" style="left:${tHi(+aT)}%"></div>
-            </div>
+              <div class="ci-tick" style="left:${tLo(+aT)}%"></div><div class="ci-tick" style="left:${tHi(+aT)}%"></div></div>
             <div class="axis">${axis20}</div>
           </div>
           <div class="bar-grp">
             <div class="bar-top"><span class="bar-lbl">Score</span><span class="bar-val">${score}/10</span></div>
-            <div class="bar-track">
-              <div class="bar-fill" style="width:${score*10}%;background:#e87e22"></div>
-            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:${score*10}%;background:#e87e22"></div></div>
             <div class="axis">${axis10}</div>
           </div>
         </div>
@@ -625,23 +1171,22 @@ function renderDashboard() {
     </div>`;
   }).join('');
 
-  TASKS_META.forEach(tm => {
-    const rows = sessions.map(s=>s.responses.find(r=>r.taskId===tm.id)).filter(Boolean);
+  s.tasks.forEach(t => {
+    const rows = sessions.map(x=>x.responses.find(r=>r.taskId===t.id)).filter(Boolean);
     if (!rows.length) return;
     const tn=rows.length;
-    const totalS=rows.filter(r=>r.outcome==='success').length;
-    const totalF=rows.filter(r=>r.outcome==='fail').length;
-    const skipN=rows.filter(r=>r.outcome==='skip').length;
-    const sP=Math.round((totalS/tn)*100), fP=Math.round((totalF/tn)*100), skP=Math.round((skipN/tn)*100);
+    const tS=rows.filter(r=>r.outcome==='success').length;
+    const tF=rows.filter(r=>r.outcome==='fail').length;
+    const sk=rows.filter(r=>r.outcome==='skip').length;
+    const sP=Math.round((tS/tn)*100), fP=Math.round((tF/tn)*100), skP=Math.round((sk/tn)*100);
     requestAnimationFrame(() => {
-      const canvas = document.getElementById('pie_'+tm.id);
-      if (!canvas) return;
-      if (chartInstances['pie_'+tm.id]) chartInstances['pie_'+tm.id].destroy();
+      const canvas = document.getElementById('pie_'+t.id); if (!canvas) return;
+      if (chartInstances['pie_'+t.id]) chartInstances['pie_'+t.id].destroy();
       const data=[], colors=[];
-      if(totalS>0){data.push(sP);colors.push('#7F77DD');}
-      if(totalF>0){data.push(fP);colors.push('#D85A30');}
-      if(skipN>0){data.push(skP);colors.push('#B4B2A9');}
-      chartInstances['pie_'+tm.id] = new Chart(canvas, {
+      if(tS>0){data.push(sP);colors.push('#7F77DD');}
+      if(tF>0){data.push(fP);colors.push('#D85A30');}
+      if(sk>0){data.push(skP);colors.push('#B4B2A9');}
+      chartInstances['pie_'+t.id] = new Chart(canvas, {
         type:'doughnut',
         data:{datasets:[{data,backgroundColor:colors,borderWidth:2,borderColor:'#fff'}]},
         options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
@@ -651,31 +1196,30 @@ function renderDashboard() {
   });
 }
 
-function clearData() {
-  if (!confirm('¿Eliminar todos los datos? Esta acción no se puede deshacer.')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  renderDashboard();
+function clearStudyData() {
+  if (!confirm('¿Eliminar todas las respuestas de este estudio?')) return;
+  localStorage.removeItem('tt_r_'+viewStudyId);
+  renderResultsPage(); toast('Datos eliminados');
 }
 
 function exportCSV() {
-  const sessions = loadSessions();
-  const rows = [['sessionId','timestamp','taskId','taskText','selectedLabel','correctAnswer','outcome','direct','timeSecs','path']];
-  sessions.forEach(s => {
-    s.responses.forEach(r => {
-      rows.push([s.sessionId, s.timestamp, r.taskId, `"${r.taskText}"`,
-        r.selectedLabel||'', r.correctAnswer, r.outcome, r.direct, r.timeSecs,
-        `"${(r.path||[]).join(' > ')}"`]);
-    });
-  });
+  const s = getStudy(viewStudyId); if (!s) return;
+  const sessions = getResponses(viewStudyId);
+  const rows = [['sessionId','timestamp','studyName','taskId','taskText','selectedLabel','correctAnswer','outcome','direct','timeSecs','path']];
+  sessions.forEach(sess => sess.responses.forEach(r => {
+    rows.push([sess.sessionId, sess.timestamp, `"${s.name}"`, r.taskId, `"${r.taskText}"`,
+      r.selectedLabel||'', r.correctAnswer||'', r.outcome, r.direct, r.timeSecs,
+      `"${(r.path||[]).join(' > ')}"`]);
+  }));
   const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(rows.map(r=>r.join(',')).join('\n'));
-  a.download = 'manada_tree_test_resultados.csv';
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(rows.map(r=>r.join(',')).join('\n'));
+  a.download = `treetest_${s.name.replace(/\s+/g,'_')}_resultados.csv`;
   a.click();
 }
 
-setInterval(() => {
-  if (document.getElementById('s-results').classList.contains('active')) renderDashboard();
-}, 15000);
+/* ═══ INIT ═══ */
+routeFromHash();
+window.addEventListener('hashchange', routeFromHash);
 </script>
 </body>
 </html>
